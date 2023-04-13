@@ -1,0 +1,72 @@
+edition: 1.0.0
+name: ChatGPT
+access: aliyun-fc
+services:
+  ap-northeast-1-ChatGPT-api:
+    component: devsapp/fc
+    props:
+      region: ap-northeast-1
+      service:
+        logConfig:
+          enableRequestMetrics: true
+          enableInstanceMetrics: true
+          logBeginRule: DefaultRegex
+          project: aliyun-fc-ap-northeast-1-8c1365e2-052a-59e3-9ed2-279970e87208
+          logstore: function-log
+        role: acs:ram::1285704801663939:role/AliyunFCDefaultRole
+        nasConfig:
+          userId: 0
+          groupId: 0
+          mountPoints:
+            - serverAddr: 25938d499bf-kry77.ap-northeast-1.nas.aliyuncs.com
+              nasDir: /ChatGPT
+              fcDir: /mnt/auto
+        internetAccess: true
+        vpcConfig:
+          securityGroupId: sg-6we7nqsj1tgap09e2apn
+          role: ""
+          vpcId: vpc-6weq57mgtoeydzmqlvnch
+          vswitchIds:
+            - vsw-6wefks8140g6cvecbwece
+        ossMountConfig:
+          mountPoints: []
+        name: ChatGPT
+      function:
+        handler: index.handler
+        timeout: 180
+        diskSize: 512
+        caPort: 9000
+        layers:
+          - acs:fc:ap-northeast-1:official:layers/Nodejs18/versions/1
+        customRuntimeConfig:
+          command:
+            - node
+            - ./server/server.js
+        instanceType: e1
+        runtime: custom.debian10
+        cpu: 0.5
+        instanceConcurrency: 20
+        memorySize: 512
+        environmentVariables:
+          PATH: >-
+            /opt/nodejs18/bin:/usr/local/bin/apache-maven/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ruby/bin:/opt/bin
+          LD_LIBRARY_PATH: >-
+            /code:/code/lib:/usr/local/lib:/opt/lib:/opt/php8.1/lib:/opt/php8.0/lib:/opt/php7.2/lib
+          NODE_PATH: >-
+            /code/node_modules
+        name: ChatGPTNextWeb
+        asyncConfiguration: {}
+        codeUri: ./
+      triggers:
+        - name: defaultTrigger
+          description: ""
+          type: http
+          qualifier: LATEST
+          config:
+            methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            authType: anonymous
+            disableURLInternet: false
