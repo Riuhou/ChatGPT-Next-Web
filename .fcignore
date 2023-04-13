@@ -1,0 +1,33 @@
+.github
+.husky
+# .next
+.s
+.vscode
+app
+dist
+docs
+# node_modules
+# public
+scripts
+# server
+.env
+.eslintignore
+.eslintrc.json
+.fcignore
+.gitignore
+.gitpod.yml
+.lintstagedrc.json
+.prettierrc.js
+CODE_OF_CONDUCT.md
+Dockerfile
+LICENSE
+middleware.ts
+next-env.d.ts
+next.config.js
+# package.json
+README_CN.md
+README.md
+s.yml
+tsconfig.json
+vercel.json
+yarn.lock
